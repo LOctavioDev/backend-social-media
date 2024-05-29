@@ -10,10 +10,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
-import postRoutes from "./routes/post.js";
+import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
+import User from "./models/User.js";
+import Post from "./models/Post.js";
+import { users, posts } from "./data/index.js";
 
 // * CONFIGURATIONS
 
@@ -61,12 +64,17 @@ app.use("/posts", postRoutes);
 
 const PORT = process.env.PORT || 6001;
 
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
+mongoose.connect(process.env.MONGO_URL)
+  .then(async () => {
     app.listen(PORT, () => console.log(`SERVER ON PORT: ${PORT}`));
+
+    // ! ADD DATA ONE TIME
+    // try {
+    //   await User.insertMany(users);
+    //   await Post.insertMany(posts);
+    //   console.log("Dummy data inserted correctly");
+    // } catch (error) {
+    //   console.error('Error inserting data:', error);
+    // }
   })
   .catch((err) => console.log(`${err} DID NOT CONNECT`));
