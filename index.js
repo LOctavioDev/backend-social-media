@@ -78,3 +78,5 @@ mongoose.connect(process.env.MONGO_URL)
     // }
   })
   .catch((err) => console.log(`${err} DID NOT CONNECT`));
+
+console.log("ESO ES UN PRUEBA LAZY GIT");
